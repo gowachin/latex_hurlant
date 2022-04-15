@@ -1,0 +1,172 @@
+\documentclass[12pt, colorinlistoftodos]{article} 
+
+% This tex require pdflatex + pdflatex for link to appear
+
+\title{Linked equation tables}
+\author{Maxime Jaunatre}
+
+\usepackage[frenchb]{babel}
+\usepackage{ifthen} 
+\newboolean{draft}\setboolean{draft}{true} % display notes, stamp
+
+\providecommand{\main}{.}
+
+\usepackage{tabularx}
+\usepackage{eurosym}
+
+\usepackage[utf8]{inputenc} % encoding
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{a4paper} % format de feuille
+\geometry{top=2.5cm, bottom=2.5cm, left=2cm, right=2cm} %marges
+%\linespread{1.5} % interligne
+\usepackage{lipsum}
+
+\usepackage[table,dvipsnames*,svgnames]{xcolor} % allow to put colour in table and correct a bug in names
+% option 'gray' emulate a gray scale print of the document
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\chead{\csname @title\endcsname}
+\lhead{\includegraphics[width=0.8cm]{\main/.tex/IAM_hex.jpg}}
+\rhead{\includegraphics[width=2cm]{\main/.tex/Logo_ifr_y.jpg}}
+\lfoot{page \thepage}\cfoot{}
+\rfoot{\csname @author\endcsname ~-~\the\year}
+
+\fancypagestyle{plain}{%
+    \fancyhf{}% clear all header and footer fields
+    \lfoot{page \thepage}\cfoot{}
+    \rfoot{\csname @author\endcsname ~-~\the\year}
+    \renewcommand{\headrulewidth}{0pt}
+}
+
+\ifthenelse{\boolean{draft}}{
+    %\usepackage{pagecolor} \pagecolor{darkgray} \color{lightgray}
+    \usepackage[color={[rgb]{0.96, 0.77, 0.19}}]{draftwatermark}
+    \SetWatermarkScale{4}
+    \SetWatermarkText{DRAFT}
+    \usepackage[backgroundcolor = orange]{todonotes}
+}{ \usepackage[disable]{todonotes} }
+
+\usepackage{marginnote}
+\renewcommand{\marginpar}{\marginnote}
+
+% using math
+\usepackage{amstext}
+
+\usepackage[hidelinks]{hyperref} % lien cliquables
+\hypersetup{
+colorlinks = true,
+linkcolor = black,
+citecolor = black,
+urlcolor = blue
+} % https://tex.stackexchange.com/questions/50747/options-for-appearance-of-links-in-hyperref
+\usepackage{url}
+
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{float} 
+
+\def\correction#1{%
+    \abovedisplayshortskip=#1\baselineskip\relax\belowdisplayshortskip=#1\baselineskip\relax%
+    \abovedisplayskip=#1\baselineskip\relax\belowdisplayskip=#1\baselineskip\relax}
+
+\arrayrulewidth=1pt\relax
+\tabcolsep=5pt\relax
+\fboxsep=\tabcolsep\relax
+\fboxrule=\arrayrulewidth\relax
+
+\newcolumntype{A}[2]{%
+    >{\minipage{\dimexpr#1\linewidth-2\tabcolsep-#2\arrayrulewidth\relax}\vspace\tabcolsep}%
+    c<{\vspace\tabcolsep\endminipage}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Defining  table format
+\newcounter{nTable}
+\newenvironment{nTable}[6]{%
+        \stepcounter{nTable}
+    \longtable{%
+        |>{ \addtocounter{rowcntr}{-1} \refstepcounter{rowcntr} \therowcntr }A{#1}{1.5}<{\addtocounter{rowcntr}{1}} 
+        |>{\centering$\displaystyle}A{#2}{1}<{$}% for inline equation
+        |>{\centering}A{#3}{1.5}% for text
+        |>{\centering}A{#4}{1.5}% for text
+        |>{\small \centering}A{#5}{1.5}% for text
+        |>{\centering$\displaystyle}A{#6}{1}<{$}% for inline equation
+        |}\hline\ignorespaces}{%
+    \endlongtable\ignorespacesafterend}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\LTcapwidth=\textwidth % force width of longtable caption
+
+\usepackage{ifthen}
+
+\newcounter{rowcntr}[table]
+\renewcommand{\therowcntr}{%
+    \ifnum\value{rowcntr} > 0
+        \ifnum\thenTable = 1
+            i\arabic{rowcntr}
+        \else 
+            \ifnum\thenTable = 2
+                p\arabic{rowcntr}
+            \else
+                \thetable. \arabic{rowcntr}
+            \fi
+        \fi 
+    \fi
+}
+
+
+\newcommand{\fm}{_{f,m}}
+
+\newcommand{\tabnl}{\tabularnewline\hline}
+
+\newcommand{\pref}[1]{(\ref{#1})}
+
+\newcolumntype{L}{>{\(\displaystyle }l<{\)}} % math-mode version of "l" column type
+
+\begin{document}
+
+\thispagestyle{plain}
+
+\begin{figure}
+    \par ~ \par
+    \begin{minipage}{\textwidth}
+        \begin{center}
+            {\huge \csname @title\endcsname }
+        \end{center}
+        \rule{7em}{.4pt}\par
+        Maxime Jaunatre$^1$ \hfill \today \newline
+        \par ~ \par
+        $^1$ Workplace ~| Team \newline
+        
+    \end{minipage}
+\end{figure}
+\hrule
+
+\begin{nTable}{0.05}{0.17}{0.09}{0.2}{0.1}{0.4}
+\textbf{N} & \text{\normalsize\textbf{Notation}} & \textbf{Type}& \textbf{Description} & \textbf{Unité} & \textbf{Equation} \tabnl
+
+\label{p1f} & p1_{f} & E &  & - &  \tabnl
+\label{p1fm} & p1\fm & E &  & - &  \tabnl
+\label{p2f} & p2_{f} & E &  & - &  \tabnl
+\label{p2fm} & p2\fm & E &  & - &  \tabnl
+\label{fcfm} & fc\fm & E &  & - &  \tabnl
+\label{vffm} & vf\fm & E &  & - & p2_{f\pref{p2f}} \tabnl
+
+\caption{First table}
+\end{nTable}
+
+\begin{nTable}{0.05}{0.17}{0.09}{0.2}{0.1}{0.4}
+    \textbf{N} & \text{\normalsize\textbf{Notation}} & \textbf{Type}& \textbf{Description} & \textbf{Unité} & \textbf{Equation} \tabnl
+
+    \label{uefm} & ue\fm & EC &  & - & 
+    p1_{f,m\pref{p1fm}} \cdot p2_{f,m\pref{p2fm}} \tabnl
+    \label{uef} & ue_f & EC &  & - &
+    p1_{f\pref{p1f}} \cdot p2_{f\pref{p2fm}} \tabnl
+    \label{expfm} & exp\fm & EC &  & L/ue &
+    \frac{ fc_{f,m\pref{fcfm}} }{ vf_{f,m\pref{vffm}} \cdot ue_{f,m\pref{uefm}} } \tabnl
+
+\caption{Second table}
+\end{nTable}
+
+\end{document}

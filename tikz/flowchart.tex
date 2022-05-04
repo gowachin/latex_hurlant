@@ -71,39 +71,24 @@
 
 \begin{tikzpicture}[block/.style={draw,fill=strange,minimum height=2.5em},
     font=\sffamily,>=stealth]
-%  \begin{scope}[start chain=A going below,node distance=1em,
-%     local bounding box=buffers]
-%   \foreach \X in {1,...,4}
-%   {\node[block,on chain,minimum width=8em]{Buffer};
-%   \draw[<-,thick] (A-\X.west) -- node[above]{$m_\X(t)$} ++ (-4em,0) ;
-%   }
-%  \end{scope} 
-%  \node[right=6em of buffers,align=center,inner sep=0.5pt,fill=strange,
-    % circle,draw] (SO) {Scan\\operations};
-%  \foreach \X in {1,...,4} 
-%   {
-    %   \draw[->,thick] (A-\X.east) -- node[above]{$m_\X(t)$} ++ (4em,0) -- (SO);
-%   }
 
-\node[block,minimum width=6em](Ceit){$C_{e,i,t}$};
+    \begin{scope}[start chain=A going below,node distance=1em,
+                  local bounding box=buffers]
+        \node[block,minimum width=6em](remote){Remote github};
+        \node[right= 8em of remote, block,minimum width=6em](local){Fichiers};
+    \end{scope} 
 
-\node[block,minimum width=6em](wCei){$wC_{e,i}$};
+    \node[below= 6em of buffers,align=center, block,minimum width=6em](repo){Repository \\Git local};
 
+    %\draw[->, thick](remote) edge[bend left] node[midway, fill=white]{Pull} (local);
+    \draw[->, thick](remote) edge[bend left] node[midway, fill=white]{Pull} (repo);
+    %\draw[->, thick](remote) edge[dashed] node[midway, fill=white]{Fetch} (repo);
+    \draw[->, thick](remote) edge node[midway, fill=white]{Clone} (local);
+    \draw[->,thick](local) edge[bend left] node[midway, fill=white]{Add} (repo);
+    \draw[->,thick](repo) edge[bend left] node[midway, fill=white]{Push} (remote);
+    \draw[->,thick](repo) edge[loop right] node[midway, fill=white]{Commit} (repo);
+    
 
-
-\node[block,minimum width=6em](Yeit){$Y_{e,i,t}$};
-
-\node[block,minimum width=6em](Cefmit){$C_{e,f,m,i,t}$};
-
-\node[block,minimum width=6em](wDei){$wD_{e,i}$};
-
- \node[block,minimum width=6em](Defmit){$D_{e,f,m,i,t}$};
- \node[below= 2em of Defmit,block,minimum width=6em](Yefmit){$Y_{e,f,m,i,t}$};
-
-
- \node[right=4em of Defmit,block,minimum width=6em](Lefmit){$L_{e,f,m,i,t}$};
- \draw[->,thick](Defmit.east) to[bend left] (Lefmit.west);
- \draw[->,thick](Yefmit.east) to[bend left] (Lefmit.west);
 \end{tikzpicture}
 
 

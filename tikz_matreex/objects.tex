@@ -54,7 +54,6 @@
 
 \begin{tikzpicture}
 
-
     \draw [rounded corners] (0, 0) rectangle +(\mlf, -4.4) {};
     \node at (0,0) (forest) {};
     \node [below right=\r cm and \r cm of forest] {
@@ -72,12 +71,27 @@
 
 \begin{tikzpicture}
 
+    \node at (0,0) (forest) {};
+    \draw [rounded corners] (forest) rectangle +(14.2, -16.4) {};
+    \node [below right=\r cm and \r cm of forest] { \textbf{Forest class} (community/plot)};
+
+    \node at (\r, -1.2) (species) {};
+    \draw [rounded corners, dotted] (species)rectangle +(13.8, -13.8) {};
+
+    \begin{scope}[xshift = 2*\r cm, yshift = -1.4 cm]
+
     \node at (0, 0) (speciesB) {};
-    \draw [rounded corners] (speciesB)rectangle +(13.4, -13.2) {};
+    % \draw [rounded corners] (speciesB)rectangle +(13.4, -13.2) {};
+    \draw [rounded corners] (speciesB) -- (4,0) -- (4,-1) -- (13.4,-1) -- (13.4, -13.4) -- (0, -13.4) -- (0, -0.2) -- cycle;
     \node [below right=\r cm and \r cm of speciesB] {\textbf{Species class}};
 
+    \node at (4.2, 0) (sp1) {};           \node at (4.2 + 3.2, 0) (sp2) {}; 
+
+    \draw [rounded corners] (sp1) rectangle node{Species A} +(3, -0.8);
+    \draw [rounded corners] (sp2) rectangle node{Species B} +(3, -0.8);
+
     % layout
-    \begin{scope}[xshift = \r cm, yshift = -1 cm]
+    \begin{scope}[xshift = \r cm, yshift = -1.2 cm]
     \node at (0, 0) (init) {};    \node at (4.2 + \r , 0) (recruit) {};
     \node at (0, -\r -1) (harv) {};   \node at (4.2 + \r , -\r - 1) (harvl) {};  \node at (3.4 + 4.2 + 2*\r , -\r - 1) (rdi) {};
     \node at (0, -2*\r -2) (dist) {};   \node at (5.6 + \r , -2*\r - 2) (distc) {};
@@ -104,7 +118,7 @@
 
     
 
-    \begin{scope}[xshift = \r cm, yshift = -4.8 cm] % IPM class
+    \begin{scope}[xshift = \r cm, yshift = -5 cm] % IPM class
     \node at (0, 0) (IPM) {};
     \draw [rounded corners] (IPM) rectangle +(13, -8.2) {};
     \node [below right=\r cm and \r cm of IPM] {\textbf{IPM class}, matrices after integration from fitted models};
@@ -114,7 +128,7 @@
         \begin{scope}
             % IPM matrices scope
             \node at (0, 0) (IPM) {};
-            \draw [rounded corners, dotted] (IPM) rectangle +(6, -3.4) {};
+            \draw [rounded corners, dotted] (IPM) rectangle +(6, -3.4);
             \node [below right=\r cm and \r cm of IPM] (mlab) {\textbf{Growth * Mortality} matrices};
     
             % layout
@@ -125,8 +139,8 @@
             \draw pic[scale = 0.3, opacity = 0.2] at(k3) {kernel};
             \draw pic[scale = 0.3, opacity = 0.3] at(k2) {kernel};
             \draw pic[scale = 0.3, opacity = 0.6] at(k1) {kernel};
-            \node [above right= -2*\r cm and 3 cm of k1, text width=2cm,align=center] {
-            Dimensions: \\ $m * m * BA$ \\~\\ Names : $BA$};
+            \node [above right= -3*\r cm and 2.5 cm of k1, text width=3cm,align=center] {
+            Dimensions: \\ $m * m * BA$ \\~\\ Names : $BA$ \tiny\\$m = length(mesh)$};
         \end{scope}
 
 
@@ -169,18 +183,21 @@
 
 \end{scope}
 
-\begin{scope}[xshift = 15 cm]
-    % scope for simple vectors
+\end{scope}
+
+\begin{scope}[xshift = -10 cm]
+    % Légende
     % layout
     \node at (0, 0) (class) {};           \node at (3.2, 0) (list) {};
     \node at (0, -\r - 1) (vector) {};    \node at (3.2, -\r - 1) (fun) {};
 
-    \draw [rounded corners] (class) rectangle node{\textbf{Class} object (list)} +(3, -1);
+    \draw [rounded corners] (class) rectangle node{\textbf{S3 Class} object} +(3, -1);
     \draw [rounded corners, dashed] (vector) rectangle node{\textbf{vector} object} +(3, -1);
     \draw [rounded corners, dotted] (list) rectangle node{\textbf{list} object} +(3, -1);
     \draw [rounded corners, loosely dashdotted] (fun) rectangle node{\textbf{function()}} +(3, -1);
 
 \end{scope}
+
 
 \end{tikzpicture}
 

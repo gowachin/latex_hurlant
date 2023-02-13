@@ -1,0 +1,14 @@
+\documentclass[tikz,border=3mm]{standalone}
+
+\usepackage{pgfplots}
+
+\usetikzlibrary{decorations.pathreplacing}
+\begin{document}
+\begin{tikzpicture}
+
+	\node[rectangle,draw] (r) at (0,0) {};
+
+\end{tikzpicture}
+
+
+\end{document}

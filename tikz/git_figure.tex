@@ -150,4 +150,27 @@
     \end{tikzpicture}
 
 
+    \begin{tikzpicture}[block/.style={draw,fill=strange,minimum height=2.5em},
+      font=\sffamily,>=stealth]
+  
+      \begin{scope}[start chain=A going below,node distance=1em,
+                    local bounding box=buffers]
+          \node[block,minimum width=6em](remote){Remote github};
+          \node[right= 8em of remote, block,minimum width=6em](local){Fichiers};
+      \end{scope} 
+  
+      \node[below= 6em of buffers,align=center, block,minimum width=6em](repo){Repository \\Git local};
+  
+      %\draw[->, thick](remote) edge[bend left] node[midway, fill=white]{Pull} (local);
+      \draw[->, thick](remote) edge[bend left] node[midway, fill=white]{Pull} (repo);
+      %\draw[->, thick](remote) edge[dashed] node[midway, fill=white]{Fetch} (repo);
+      \draw[->, thick](remote) edge node[midway, fill=white]{Clone} (local);
+      \draw[->,thick](local) edge[bend left] node[midway, fill=white]{Add} (repo);
+      \draw[->,thick](repo) edge[bend left] node[midway, fill=white]{Push} (remote);
+      \draw[->,thick](repo) edge[loop right] node[midway, fill=white]{Commit} (repo);
+      
+  
+  \end{tikzpicture}
+
+
 \end{document}

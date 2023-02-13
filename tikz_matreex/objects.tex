@@ -49,13 +49,13 @@
 \end{tikzpicture}
 
 
-\def\mlf{15}
+\def\mlf{10}
 \def\r{0.2}
 
 \begin{tikzpicture}
 
 
-    \draw [rounded corners] (0, 0) rectangle +(\mlf, -20) {};
+    \draw [rounded corners] (0, 0) rectangle +(\mlf, -4.4) {};
     \node at (0,0) (forest) {};
     \node [below right=\r cm and \r cm of forest] {
         \textbf{Forest class} (community/plot), list of species
@@ -65,75 +65,122 @@
     \node [below right=\r cm and \r cm of speciesA] {\textbf{Species}};
 
     \node at (\r, -2 - \r) (speciesB) {};
-    \draw [rounded corners] (speciesB)rectangle +(\mlf - 2*\r, -20) {};
+    \draw [rounded corners, loosely dashdotted] (speciesB)rectangle +(\mlf - 2*\r, -2) {};
     \node [below right=\r cm and \r cm of speciesB] {\textbf{Species class}};
-
-    \node at (2*\r, -4 - 2*\r) (IPM) {};
-    \draw [rounded corners] (IPM) rectangle +(\mlf - 4*\r, -20) {};
-    \node [below right=\r cm and \r cm of IPM] {\textbf{IPM class}, population functions};
-
-    \node at (3*\r, -6 - 3*\r) (IPM) {};
-    \draw [rounded corners, dotted] (IPM) rectangle +(\mlf - 6*\r, -4) {};
-    \node [below right=\r cm and \r cm of IPM] (mlab) {\textbf{Growth * Mortality} matrices};
-    \node [below left=2 cm and 0cm of mlab] (k1) {};
-    \node [below right= \r/2 cm and \r cm of k1] (k2) {};
-    \node [below right= \r/2 cm and \r cm of k2] (k3) {};
-    \draw pic[scale = 0.3, opacity = 0.2] at(k3) {kernel};
-    \draw pic[scale = 0.3, opacity = 0.3] at(k2) {kernel};
-    \draw pic[scale = 0.3, opacity = 0.6] at(k1) {kernel};
-
-    \node [below right=1 cm and \r cm of mlab, align = left] (mesh) {Mesh, L and U values};
-    \node [below =\r of mesh, align = left] (ba) {Basal area vector : $[0:200]$};
-    \node [below =\r of ba, align = left] (delay) {Delay};
-    \node [below =\r of delay, align = left] (climat) {Climatic condition and name};
-    \node [below =\r of climat, align = left] (rec) {Recruitment function};
 
 \end{tikzpicture}
 
 \begin{tikzpicture}
 
-    \node at (0, 0) (IPM) {};
-    \draw [rounded corners] (IPM) rectangle +(15.2, -10) {};
-    \node [below right=\r cm and \r cm of IPM] {\textbf{IPM class}, population functions};
+    \node at (0, 0) (speciesB) {};
+    \draw [rounded corners] (speciesB)rectangle +(13.4, -13.2) {};
+    \node [below right=\r cm and \r cm of speciesB] {\textbf{Species class}};
 
+    % layout
+    \begin{scope}[xshift = \r cm, yshift = -1 cm]
+    \node at (0, 0) (init) {};    \node at (4.2 + \r , 0) (recruit) {};
+    \node at (0, -\r -1) (harv) {};   \node at (4.2 + \r , -\r - 1) (harvl) {};  \node at (3.4 + 4.2 + 2*\r , -\r - 1) (rdi) {};
+    \node at (0, -2*\r -2) (dist) {};   \node at (5.6 + \r , -2*\r - 2) (distc) {};
+    
+
+    \draw [rounded corners, loosely dashdotted] (init) rectangle node[text width=4.2cm, align= center]{
+        \textbf{init\_pop}(\scriptsize mesh, SurfEch\normalsize) } +(4.2, -1);
+    \draw [rounded corners, loosely dashdotted] (recruit) rectangle node[text width=8.6cm, align= center]{
+        \textbf{recruit\_fun}(\scriptsize BATOTSP, BATOTNonSP, mesh, SurfEch\normalsize) } +(8.6, -1);
+
+    \draw [rounded corners, loosely dashdotted] (harv) rectangle node[text width=4.2cm, align= center]{
+        \textbf{init\_pop}(\scriptsize x, species, ...\normalsize) } +(4.2, -1);
+    \draw [rounded corners, dashed] (harvl) rectangle node[text width=3.4cm, align= center]{
+        \textbf{harv\_lim} vector } +(3.4, -1);
+    \draw [rounded corners, dashed] (rdi) rectangle node[text width=3.4cm, align= center]{
+        \textbf{rdi\_coef} vector } +(3.4, -1);
+
+    \draw [rounded corners, loosely dashdotted] (dist) rectangle node[text width=5.6cm, align= center]{
+            \textbf{disturb\_fun}(\scriptsize x, species, disturb, ...\normalsize) } +(5.6, -1);
+    \draw [rounded corners, dashed] (distc) rectangle node[text width=5.6cm, align= center]{
+        \textbf{disturb\_coef} vector } +(5.6, -1);
+    
+    \end{scope}
+
+    
+
+    \begin{scope}[xshift = \r cm, yshift = -4.8 cm] % IPM class
+    \node at (0, 0) (IPM) {};
+    \draw [rounded corners] (IPM) rectangle +(13, -8.2) {};
+    \node [below right=\r cm and \r cm of IPM] {\textbf{IPM class}, matrices after integration from fitted models};
 
     \begin{scope}[xshift = \r cm, yshift = -1 cm]
 
         \begin{scope}
-        \node at (0, 0) (IPM) {};
-        \draw [rounded corners, dotted] (IPM) rectangle +(6, -4) {};
-        \node [below right=\r cm and \r cm of IPM] (mlab) {\textbf{Growth * Mortality} matrices};
+            % IPM matrices scope
+            \node at (0, 0) (IPM) {};
+            \draw [rounded corners, dotted] (IPM) rectangle +(6, -3.4) {};
+            \node [below right=\r cm and \r cm of IPM] (mlab) {\textbf{Growth * Mortality} matrices};
     
-    
-        \node [below left=2 cm and 0cm of mlab] (k1) {};
-        \node [below right= \r/2 cm and \r cm of k1] (k2) {};
-        \node [below right= \r/2 cm and \r cm of k2] (k3) {};
+            % layout
+            \node [below left=1.5 cm and 0cm of mlab] (k1) {};
+            \node [below right= \r/2 cm and \r cm of k1] (k2) {};
+            \node [below right= \r/2 cm and \r cm of k2] (k3) {};
        
-        \draw pic[scale = 0.3, opacity = 0.2] at(k3) {kernel};
-        \draw pic[scale = 0.3, opacity = 0.3] at(k2) {kernel};
-        \draw pic[scale = 0.3, opacity = 0.6] at(k1) {kernel};
-        \node [above right= 0 cm and 3 cm of k1, text width=2cm,align=center] {
+            \draw pic[scale = 0.3, opacity = 0.2] at(k3) {kernel};
+            \draw pic[scale = 0.3, opacity = 0.3] at(k2) {kernel};
+            \draw pic[scale = 0.3, opacity = 0.6] at(k1) {kernel};
+            \node [above right= -2*\r cm and 3 cm of k1, text width=2cm,align=center] {
             Dimensions: \\ $m * m * BA$ \\~\\ Names : $BA$};
         \end{scope}
+
+
+        \begin{scope}[xshift = 6.2 cm]
+            % scope for simple vectors
+            % layout
+            \node at (0, 0) (BAv) {};           \node at (3.2, 0) (mv) {};
+            \node at (0, -\r - 1) (cliv) {};    
+            \node at (0, -2*\r - 2) (intv) {};  
+
+            \draw [rounded corners, dashed] (BAv) rectangle node{\textbf{BA} vector} +(3, -1);
+            \draw [rounded corners, dashed] (mv) rectangle node{\textbf{mesh} vector} +(3, -1);
+            \draw [rounded corners, dashed] (cliv) rectangle node{\textbf{climatic} vector : named clim variable} +(6.2, -1);
+            \draw [rounded corners, dashed] (intv) rectangle node{\textbf{int} vector : log of integration param} +(6.2, -1);
+
+        \end{scope}
     
-        \begin{scope}[xshift = 0 cm, yshift = -4.2 cm]
+        \begin{scope}[xshift = 0 cm, yshift = -3.6 cm]
             \node at (0,0) (forest) {};
-            \draw [rounded corners] (forest) rectangle +(8.6, -3.2) {};
+            \draw [rounded corners] (forest) rectangle +(8.6, -3.4);
             \node [below right=\r cm and \r cm of forest] {
                 \textbf{Fit class} (function params)
             };
             \node at (\r, -1.2) (sv) {};
-            \draw [rounded corners, dotted] (sv)rectangle node{\textbf{Survival}} +(2.5, -1) {};
+            \draw [rounded corners, dotted] (sv)rectangle node{\textbf{Survival}} +(2.5, -1);
             \node [right= 2.5 cm of sv] (gr) {};
-            \draw [rounded corners, dotted] (gr) rectangle node{\textbf{Growth}} +(2.2, -1) {};
+            \draw [rounded corners, dotted] (gr) rectangle node{\textbf{Growth}} +(2.2, -1);
             \node [right= 2.2 cm of gr] (rec) {};
             \draw [rounded corners, dotted] (rec) rectangle node{\textbf{Recruitment}} +(3, -1) ;
         
-            \node [below right= 1.2 cm and \r cm of sv] {Species name and $max\_dbh$};
+            \node [below right= 1.2 cm and \r cm of sv] {species name and $max\_dbh$};
     
         \end{scope}
+
+        \node at (8.6 + \r, -3*\r - 3) (infv) {};
+        \draw [rounded corners, dashed] (infv) rectangle node[text width=3cm, align= center]{
+            \textbf{info} vector \\~\\ species name, \\ correction, clim\_lab, surv, compress, delay} +(3.6, -3.4);
     
     \end{scope}
+
+\end{scope}
+
+\begin{scope}[xshift = 15 cm]
+    % scope for simple vectors
+    % layout
+    \node at (0, 0) (class) {};           \node at (3.2, 0) (list) {};
+    \node at (0, -\r - 1) (vector) {};    \node at (3.2, -\r - 1) (fun) {};
+
+    \draw [rounded corners] (class) rectangle node{\textbf{Class} object (list)} +(3, -1);
+    \draw [rounded corners, dashed] (vector) rectangle node{\textbf{vector} object} +(3, -1);
+    \draw [rounded corners, dotted] (list) rectangle node{\textbf{list} object} +(3, -1);
+    \draw [rounded corners, loosely dashdotted] (fun) rectangle node{\textbf{function()}} +(3, -1);
+
+\end{scope}
 
 \end{tikzpicture}
 

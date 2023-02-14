@@ -5,6 +5,62 @@
 
 \usetikzlibrary{decorations.pathreplacing}
 \usetikzlibrary{calc}
+
+
+\usepackage{xcolor}
+
+\definecolor{g1}{RGB}{90, 200, 94}
+\definecolor{g2}{RGB}{113, 200, 55}
+\definecolor{g3}{RGB}{170, 222, 135}
+\definecolor{g4}{RGB}{200, 250, 175}
+
+
+\makeatletter
+\def\grd@save@target#1{%
+  \def\grd@target{#1}}
+\def\grd@save@start#1{%
+  \def\grd@start{#1}}
+\tikzset{
+  grid with coordinates/.style={
+    to path={%
+      \pgfextra{%
+        \edef\grd@@target{(\tikztotarget)}%
+        \tikz@scan@one@point\grd@save@target\grd@@target\relax
+        \edef\grd@@start{(\tikztostart)}%
+        \tikz@scan@one@point\grd@save@start\grd@@start\relax
+        \draw[minor help lines] (\tikztostart) grid (\tikztotarget);
+        \draw[major help lines] (\tikztostart) grid (\tikztotarget);
+        \grd@start
+        \pgfmathsetmacro{\grd@xa}{\the\pgf@x/1cm}
+        \pgfmathsetmacro{\grd@ya}{\the\pgf@y/1cm}
+        \grd@target
+        \pgfmathsetmacro{\grd@xb}{\the\pgf@x/1cm}
+        \pgfmathsetmacro{\grd@yb}{\the\pgf@y/1cm}
+        \pgfmathsetmacro{\grd@xc}{\grd@xa + \pgfkeysvalueof{/tikz/grid with coordinates/major step}}
+        \pgfmathsetmacro{\grd@yc}{\grd@ya + \pgfkeysvalueof{/tikz/grid with coordinates/major step}}
+        \foreach \x in {\grd@xa,\grd@xc,...,\grd@xb}
+        \node[anchor=north] at (\x,\grd@ya) {\pgfmathprintnumber{\x}};
+        \foreach \y in {\grd@ya,\grd@yc,...,\grd@yb}
+        \node[anchor=east] at (\grd@xa,\y) {\pgfmathprintnumber{\y}};
+      }
+    }
+  },
+  minor help lines/.style={
+    help lines,
+    step=\pgfkeysvalueof{/tikz/grid with coordinates/minor step}
+  },
+  major help lines/.style={
+    help lines,
+    line width=\pgfkeysvalueof{/tikz/grid with coordinates/major line width},
+    step=\pgfkeysvalueof{/tikz/grid with coordinates/major step}
+  },
+  grid with coordinates/.cd,
+  minor step/.initial=.2,
+  major step/.initial=1,
+  major line width/.initial=2pt,
+}
+\makeatother
+
 \begin{document}
 
 \tikzset{
@@ -13,6 +69,12 @@
             {\fill[gray!50] (\i, 5-\i) -- (5,5-\i) -- (5,5) -- (\i,5);}
         }
         \draw (0,0) grid[step=.5] (5,5);
+    }
+}
+
+\tikzset{
+    kernf/.pic={
+        \fill[white] (0, 0) -- (5,0) -- (5,5) -- (0,5) -- cycle;
     }
 }
 
@@ -48,47 +110,37 @@
 
 \end{tikzpicture}
 
-
-\def\mlf{10}
 \def\r{0.2}
 
 \begin{tikzpicture}
 
-    \draw [rounded corners] (0, 0) rectangle +(\mlf, -4.4) {};
-    \node at (0,0) (forest) {};
-    \node [below right=\r cm and \r cm of forest] {
-        \textbf{Forest class} (community/plot), list of species
-    };
-    \node at (\r, -1) (speciesA) {};
-    \draw [rounded corners] (speciesA)rectangle +(\mlf/3, -1) {};
-    \node [below right=\r cm and \r cm of speciesA] {\textbf{Species}};
-
-    \node at (\r, -2 - \r) (speciesB) {};
-    \draw [rounded corners, loosely dashdotted] (speciesB)rectangle +(\mlf - 2*\r, -2) {};
-    \node [below right=\r cm and \r cm of speciesB] {\textbf{Species class}};
-
-\end{tikzpicture}
-
-\begin{tikzpicture}
+    % \draw (-7,-17) to[grid with coordinates] (15, 1);
 
     \node at (0,0) (forest) {};
-    \draw [rounded corners] (forest) rectangle +(14.2, -16.4) {};
+    \draw [rounded corners, fill = g1!60] (forest) rectangle +(14.2, -16.6) {};
     \node [below right=\r cm and \r cm of forest] { \textbf{Forest class} (community/plot)};
 
-    \node at (\r, -1.2) (species) {};
-    \draw [rounded corners, dotted] (species)rectangle +(13.8, -13.8) {};
+    \node at (\r, -1.2) (harvr) {};    \node at (2*\r + 9, -1.2) (infoF) {}; 
+    \draw [rounded corners, dashed] (harvr) rectangle node[text width=12cm, align= center]{
+        \textbf{harv\_rules} $[$\scriptsize Pmax, dBAmin, freq, alpha\normalsize $]$ } +(9, -1);
+        
+    \draw [rounded corners, dotted] (infoF) rectangle node[text width = 4.6cm, align= center]{
+        \textbf{info} list \\ \scriptsize Species name and clim\_lab \normalsize } +(4.6, -1);
 
-    \begin{scope}[xshift = 2*\r cm, yshift = -1.4 cm]
+    \begin{scope}[xshift = 2*\r cm, yshift = -2.8 cm]
+
+    \node at (-\r, \r) (species) {};
+    \draw [rounded corners, dotted] (species)rectangle +(13.8, -13.8) {};
 
     \node at (0, 0) (speciesB) {};
     % \draw [rounded corners] (speciesB)rectangle +(13.4, -13.2) {};
-    \draw [rounded corners] (speciesB) -- (4,0) -- (4,-1) -- (13.4,-1) -- (13.4, -13.4) -- (0, -13.4) -- (0, -0.2) -- cycle;
+    \draw [rounded corners, fill = g2!60] (speciesB) -- (4,0) -- (4,-1) -- (13.4,-1) -- (13.4, -13.4) -- (0, -13.4) -- (0, -0.2) -- cycle;
     \node [below right=\r cm and \r cm of speciesB] {\textbf{Species class}};
 
     \node at (4.2, 0) (sp1) {};           \node at (4.2 + 3.2, 0) (sp2) {}; 
 
-    \draw [rounded corners] (sp1) rectangle node{Species A} +(3, -0.8);
-    \draw [rounded corners] (sp2) rectangle node{Species B} +(3, -0.8);
+    \draw [rounded corners, fill = g2!60] (sp1) rectangle node{Species A} +(3, -0.8);
+    \draw [rounded corners, fill = g2!60] (sp2) rectangle node{Species B} +(3, -0.8);
 
     % layout
     \begin{scope}[xshift = \r cm, yshift = -1.2 cm]
@@ -103,7 +155,7 @@
         \textbf{recruit\_fun}(\scriptsize BATOTSP, BATOTNonSP, mesh, SurfEch\normalsize) } +(8.6, -1);
 
     \draw [rounded corners, loosely dashdotted] (harv) rectangle node[text width=4.2cm, align= center]{
-        \textbf{init\_pop}(\scriptsize x, species, ...\normalsize) } +(4.2, -1);
+        \textbf{harv\_fun}(\scriptsize x, species, ...\normalsize) } +(4.2, -1);
     \draw [rounded corners, dashed] (harvl) rectangle node[text width=3.4cm, align= center]{
         \textbf{harv\_lim} vector } +(3.4, -1);
     \draw [rounded corners, dashed] (rdi) rectangle node[text width=3.4cm, align= center]{
@@ -120,7 +172,7 @@
 
     \begin{scope}[xshift = \r cm, yshift = -5 cm] % IPM class
     \node at (0, 0) (IPM) {};
-    \draw [rounded corners] (IPM) rectangle +(13, -8.2) {};
+    \draw [rounded corners, fill = g3!60] (IPM) rectangle +(13, -8.2) {};
     \node [below right=\r cm and \r cm of IPM] {\textbf{IPM class}, matrices after integration from fitted models};
 
     \begin{scope}[xshift = \r cm, yshift = -1 cm]
@@ -135,9 +187,12 @@
             \node [below left=1.5 cm and 0cm of mlab] (k1) {};
             \node [below right= \r/2 cm and \r cm of k1] (k2) {};
             \node [below right= \r/2 cm and \r cm of k2] (k3) {};
-       
+
+            \draw pic[scale = 0.3] at(k3) {kernf};
             \draw pic[scale = 0.3, opacity = 0.2] at(k3) {kernel};
+            \draw pic[scale = 0.3] at(k2) {kernf};
             \draw pic[scale = 0.3, opacity = 0.3] at(k2) {kernel};
+            \draw pic[scale = 0.3] at(k1) {kernf};
             \draw pic[scale = 0.3, opacity = 0.6] at(k1) {kernel};
             \node [above right= -3*\r cm and 2.5 cm of k1, text width=3cm,align=center] {
             Dimensions: \\ $m * m * BA$ \\~\\ Names : $BA$ \tiny\\$m = length(mesh)$};
@@ -159,9 +214,9 @@
         \end{scope}
     
         \begin{scope}[xshift = 0 cm, yshift = -3.6 cm]
-            \node at (0,0) (forest) {};
-            \draw [rounded corners] (forest) rectangle +(8.6, -3.4);
-            \node [below right=\r cm and \r cm of forest] {
+            \node at (0,0) (fit) {};
+            \draw [rounded corners, fill = g4!60] (fit) rectangle +(8.6, -3.4);
+            \node [below right=\r cm and \r cm of fit] {
                 \textbf{Fit class} (function params)
             };
             \node at (\r, -1.2) (sv) {};
@@ -185,12 +240,13 @@
 
 \end{scope}
 
-\begin{scope}[xshift = -10 cm]
+\begin{scope}[xshift = -6.6 cm, yshift = -1cm]
     % Légende
     % layout
     \node at (0, 0) (class) {};           \node at (3.2, 0) (list) {};
     \node at (0, -\r - 1) (vector) {};    \node at (3.2, -\r - 1) (fun) {};
 
+    \node[above right= 0cm and 0cm of class] {\textbf{Legend}};
     \draw [rounded corners] (class) rectangle node{\textbf{S3 Class} object} +(3, -1);
     \draw [rounded corners, dashed] (vector) rectangle node{\textbf{vector} object} +(3, -1);
     \draw [rounded corners, dotted] (list) rectangle node{\textbf{list} object} +(3, -1);

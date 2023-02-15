@@ -72,7 +72,7 @@
 \begin{tikzpicture}[block/.style={draw,fill=strange,minimum height=2.5em},
     font=\sffamily,>=stealth]
 
-    \begin{scope}[start chain=A going below,node distance=1em,
+    \begin{scope}[%start chain=A going below,node distance=1em,
                   local bounding box=buffers]
         \node[block,minimum width=6em](remote){Remote github};
         \node[right= 8em of remote, block,minimum width=6em](local){Fichiers};

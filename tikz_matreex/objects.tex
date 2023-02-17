@@ -158,7 +158,7 @@
 
     \node at (0, 0) (speciesB) {};
     % \draw [rounded corners] (speciesB)rectangle +(13.4, -13.2) {};
-    \draw [rounded corners, fill = g2!60] (speciesB) -- (4,0) -- (4,-1) -- (13.4,-1) -- (13.4, -13.4) -- (0, -13.4) -- (0, -0.2) -- cycle;
+    \draw [rounded corners, fill = g2!60] (speciesB) -- (4,0) -- (4,-1) -- (13.4,-1) -- (13.4, -13.4) -- (0, -13.4)  -- cycle;
     \node [below right=\r cm and \r cm of speciesB] {\textbf{Species class}};
 
     \node at (4.2, 0) (sp1) {};           \node at (4.2 + 3.2, 0) (sp2) {}; 
@@ -369,10 +369,10 @@
     \draw node[right= 4cm of nr-1, ncirc] (bansp-1) {\scriptsize BATOTNONSP};
     \draw[->,thick] (nr-1) -- (bansp-1);
     \draw[->,thick] (BA) -- (bansp-1);
-    \draw[->,thick, loosely dotted] (bansp-1.north) -- ++ (0,1cm) -- ($(rec-1.north)+(0,1.8cm)$) -- (rec-1.north);
+    \draw[->,thick, loosely dotted] (bansp-1.north) -- ++ (0,1cm) -- ($(rec-1.north)+(0,1.5cm)$) -- (rec-1.north);
 
     % retroaction arrow of the IPM
-    \draw[->,thick, loosely dotted] (getipm-1.north) -- ++ (0,1.5cm) -- ($(ngf-1.north)+(0,2.3cm)$) -- (ngf-1.north);
+    \draw[->,thick, loosely dotted] (getipm-1.north) -- ++ (0,1.5cm) -- ($(ngf-1.north)+(0,2.1cm)$) -- (ngf-1.north);
 
 
     \begin{scope}[xshift = -8 cm, yshift = -1cm]
@@ -387,7 +387,7 @@
         \node[above right= 1cm and -1cm of size] {\textbf{Legend}};
         \draw node[ncirc] at (size) { \scriptsize Size distribution};
         \draw node[ncirc, draw] at (out) { \scriptsize Saved output};
-        \draw[->, thick](as) edge node[midway, fill=white]{Function} (ae);
+        \draw[->, thick](as) edge node[midway, above, fill=white]{Function} (ae);
         \draw[->, thick, dotted](ds) edge node[midway, fill=white]{Retroaction at $t+1$} (de);
     
     \end{scope}
@@ -395,6 +395,21 @@
 
 \end{tikzpicture}
 
+\begin{tikzpicture}[
+    block/.style={draw,fill=strange,minimum height=2.5em, rounded corners},
+    font=\sffamily,>=stealth]
+    \draw node[block] (nfi) {National Forest Inventory};
 
+    \draw node[right= 4cm of nfi, block] (mod) {rec-gr-sv models};
+    \draw node[below= of mod, block] (cli) {climatic conditions};
+    \draw node[right= 3cm of mod, block] (ipm) {species IPM};
+    \draw node[right= 3cm of ipm, block] (sim) {size distribution along time};
+
+    \draw[->, thick](nfi) edge node[midway, above](ngf){fitting models} (mod);
+    \draw[->, thick](nfi) edge (cli);
+    \draw[->, thick](cli) edge (ipm);
+    \draw[->, thick](mod) edge node[midway, above](nhf){Integration} (ipm);
+    \draw[->, thick](ipm) edge node[midway, above]{Simulation} (sim);
+\end{tikzpicture}
 
 \end{document}
